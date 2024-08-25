@@ -1,4 +1,23 @@
 <?php $__env->startSection('content'); ?>
+    <?php if(session('error')): ?>
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: "<?php echo e(session('error')); ?>",
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    <?php elseif(session('success')): ?>
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: "<?php echo e(session('success')); ?>",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    <?php endif; ?>
     <?php
         $data = App\Http\Controllers\DataController::fetch_data();
     ?>
@@ -8,7 +27,7 @@
               <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>
-                <th scope="col">Positon</th>
+                <th scope="col">Position</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone Number</th>
                 <th scope="col">Type Holiday</th>
@@ -16,10 +35,10 @@
                 <th scope="col">From</th>
                 <th scope="col">To</th>
                 <th scope="col">Status</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-            
             <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <th scope="row"><?php echo e($d->id); ?></th>
@@ -34,7 +53,8 @@
                     <td>
                         <form action="<?php echo e(route('update_status')); ?>" method="POST" id="editForm-<?php echo e($d->id); ?>">
                             <?php echo csrf_field(); ?>
-                            <input type="hidden" name="id_status" value="<?php echo e($d->id); ?>">
+                            <input type="hidden" name="id" value="<?php echo e($d->id); ?>">
+                            <input type="hidden" name="type_holiday" value="<?php echo e($d->type_holiday); ?>">
                             <select name="status" class="form-select">
                                 <option value="รอพิจารณา" <?php echo e($d->status == 'รอพิจารณา' ? 'selected' : ''); ?>>รอพิจารณา</option>
                                 <option value="อนุมัติ" <?php echo e($d->status == 'อนุมัติ' ? 'selected' : ''); ?>>อนุมัติ</option>
@@ -56,6 +76,7 @@
         </table>
     </div>
     <script>
+
         function confirmEdit(id) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -71,6 +92,7 @@
                 }
             });
         }
+
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -88,6 +110,5 @@
         }
     </script>
 <?php $__env->stopSection(); ?>
-
 
 <?php echo $__env->make('layout.nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\interview\holiday\resources\views/alldata.blade.php ENDPATH**/ ?>

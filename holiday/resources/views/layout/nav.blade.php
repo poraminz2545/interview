@@ -44,8 +44,8 @@
                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                   </li>
                 </ul>
-                <form action="<?php echo e(route('search_data')); ?>" method="post" class="d-flex" role="search">
-                    <?php echo csrf_field(); ?>
+                <form action="{{route('search_data')}}" method="post" class="d-flex" role="search">
+                    @csrf
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="data">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
@@ -53,7 +53,6 @@
             </div>
           </nav>
     </div>
-    <?php echo $__env->yieldContent('content'); ?>
+    @yield('content')
 </body>
 </html>
-<?php /**PATH D:\interview\holiday\resources\views/layout/nav.blade.php ENDPATH**/ ?>
