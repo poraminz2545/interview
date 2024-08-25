@@ -1,0 +1,87 @@
+<?php $__env->startSection('content'); ?>
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Positon</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Type Holiday</th>
+                <th scope="col">Reason</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            <?php $__currentLoopData = $data_search; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <th scope="row"><?php echo e($d->id); ?></th>
+                    <td><?php echo e($d->name); ?></td>
+                    <td><?php echo e($d->position); ?></td>
+                    <td><?php echo e($d->email); ?></td>
+                    <td><?php echo e($d->phone_number); ?></td>
+                    <td><?php echo e($d->type_holiday); ?></td>
+                    <td><?php echo e($d->reason); ?></td>
+                    <td><?php echo e($d->date_holiday_from); ?></td>
+                    <td><?php echo e($d->date_holiday_to); ?></td>
+                    <td>
+                        <form action="<?php echo e(route('update_status')); ?>" method="POST" id="editForm-<?php echo e($d->id); ?>">
+                            <?php echo csrf_field(); ?>
+                            <input type="hidden" name="id_status" value="<?php echo e($d->id); ?>">
+                            <select name="status" class="form-select">
+                                <option value="รอพิจารณา" <?php echo e($d->status == 'รอพิจารณา' ? 'selected' : ''); ?>>รอพิจารณา</option>
+                                <option value="อนุมัติ" <?php echo e($d->status == 'อนุมัติ' ? 'selected' : ''); ?>>อนุมัติ</option>
+                                <option value="ไม่อนุมัติ" <?php echo e($d->status == 'ไม่อนุมัติ' ? 'selected' : ''); ?>>ไม่อนุมัติ</option>
+                            </select>
+                            <button type="button" class="btn btn-primary mt-2" onclick="confirmEdit('<?php echo e($d->id); ?>')">Edit Status</button>
+                        </form>
+                    </td>
+                    <form action="<?php echo e(route('delete_data')); ?>" method="POST" id="deleteForm">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="id" value="<?php echo e($d->id); ?>">
+                        <td><button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button></td>
+                    </form>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </tbody>
+        </table>
+    </div>
+    <script>
+        function confirmEdit(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to update the status!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('editForm-' + id).submit();
+                }
+            });
+        }
+        function confirmDelete() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm').submit();
+                }
+            });
+        }
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layout.nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\interview\holiday\resources\views/search.blade.php ENDPATH**/ ?>
